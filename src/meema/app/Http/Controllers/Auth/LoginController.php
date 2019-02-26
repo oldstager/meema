@@ -25,7 +25,22 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+
+    // baris ini dihapus:
+    // protected $redirectTo = '/home';
+    // diganti dengan:
+	protected function redirectTo( ) {
+		if (Auth::check() && Auth::user()->role == 'admin') {
+			return redirect('/admin');
+		}
+		elseif (Auth::check() && Auth::user()->role == 'staf') {
+			return redirect('/staf');
+		}
+		else {
+			return redirect('/login');
+		}
+	}
+
 
     /**
      * Create a new controller instance.

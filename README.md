@@ -378,11 +378,122 @@ Untuk mencoba hasilnya:
 $ php artisan serve
 ```
 
-Setelah itu akses ke http://localhost:8000/, Coba register dan setelah itu logout kemudian login.
+Setelah itu akses ke http://localhost:8000/, Coba register dan setelah itu logout kemudian login. Setelah berhasil, kita akan membuat supaya setelah login, masing-masing role bisa berada pada halaman yang dibuat untuk role tersebut. Untuk keperluan itu, diperlukan *middleware* yang akan menyaring *request* yang masuk ke aplikasi. Perintah *php artisan make:auth* yang sudah dikerjakan sebenarnya merupakan bagian dari *middleware*. Kita akan membuat *middleware* untuk memproses akses ke aplikasi, jika masuk sebagai admin, maka akan menampilkan halaman admin, jika staf, maka akan menampilkan halaman staf.
 
+```bash
+$ php artisan make:middleware Admin
+$ php artisan make:middleware Staf
+```
 
+Setelah itu kita edit file **Admin.php** dan **Staf.php** di **app/Http/Middleware/**:
 
+__Admin.php__
 
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Auth;
+
+class Admin
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+	    if (Auth::check() && Auth::user()->role == 'admin') {
+		    return $next($request);
+	    }
+	    elseif (Auth::check() && Auth::user()->role == 'staf') {
+		    return redirect('/staf');
+	    }
+	    else {
+		    return redirect('/login');
+	    }
+    }
+}
+```
+
+__Staf.php__
+
+```php
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+
+class Staf
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+	    if (Auth::check() && Auth::user()->role == 'staf') {
+		    return $next($request);
+	    }
+	    elseif (Auth::check() && Auth::user()->role == 'admin') {
+		    return redirect('/admin');
+	    }
+	    else {
+		    return redirect('/login');
+	    }
+    }
+}
+```
+
+Middleware yang sudah dibuat harus didaftarkan terlebih dahulu di **app/Http/Kernel.php**:
+
+```php
+    protected $routeMiddleware = [
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+	'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+	// Tambahan:
+	'admin' => 'App\Http\Middleware\Admin',
+	'agent' => 'App\Http\Middleware\Agent',
+	'customer' => 'App\Http\Middleware\Customer',
+	// sampai disini tambahan
+    ];
+```
+
+Setelah itu, kita harus mengatur halaman yang akan ditampilkan masing-masing role tersebut setelah login. Edit **app/Http/Controllers/Auth/LoginController.php**:
+
+```php
+    // baris ini dihapus:
+    // protected $redirectTo = '/home';
+    // diganti dengan:
+	protected function redirectTo( ) {
+		if (Auth::check() && Auth::user()->role == 'admin') {
+			return redirect('/admin');
+		}
+		elseif (Auth::check() && Auth::user()->role == 'staf') {
+			return redirect('/staf');
+		}
+		else {
+			return redirect('/login');
+		}
+	}
+
+```
 
 
  

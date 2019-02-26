@@ -15,6 +15,14 @@ class Staf
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+	    if (Auth::check() && Auth::user()->role == 'staf') {
+		    return $next($request);
+	    }
+	    elseif (Auth::check() && Auth::user()->role == 'admin') {
+		    return redirect('/admin');
+	    }
+	    else {
+		    return redirect('/login');
+	    }
     }
 }
