@@ -8,6 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+
+	protected $primaryKey = 'nidn';
+	protected $keyType = 'string';
+
+
     use Notifiable;
 
     /**
@@ -39,7 +44,7 @@ class User extends Authenticatable
 
     public function prodi()
     {
-        return $this->belongsTo('App\Prodi');
+        return $this->belongsTo('App\Prodi', 'kode_prodi');
     }
 
 }
