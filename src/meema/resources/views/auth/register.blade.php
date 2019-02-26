@@ -1,6 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -28,13 +42,17 @@
     </div>
 </div>
 
+
 <div class="form-group row">
     <label for="kode_prodi" class="col-md-4 col-form-label text-md-right">Program Studi</label>
 
     <div class="col-md-6">
-        <select name="kode_prodi" class="form-control" >
-            <option value="prodi1">Program Studi 1</option>
-            <option value="prodi2">Program Studi 2</option>
+	<select name="kode_prodi" class="form-control" >
+
+	@foreach ($prodis as $prodi)
+            <option value={{ $prodi->kode_prodi }}>{{ $prodi->nama_prodi }}</option>
+	@endforeach
+
         </select>
     </div>
 </div>

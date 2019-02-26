@@ -26,7 +26,13 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('role');
             $table->rememberToken();
-            $table->timestamps();
+	    $table->timestamps();
+
+		$table->foreign('kode_prodi')
+			->references('kode_prodi')
+			->on('prodis')
+			->onDelete('cascade');
+
         });
     }
 

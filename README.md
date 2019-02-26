@@ -834,3 +834,113 @@ Route::get('/staf', 'StafController@index');
 
 Setelah itu, aktifkan aplikasi dan coba login dengan menggunakan 2 role tersebut. Masing-masing akan masuk ke halaman sesuai role dan jika belum login atau login tidak sesuai dengan role, maka akan masuk ke halaman login (/login) atau home sesuai role (/home).
 
+## Relasi Antar Tabel dengan Eloquent ORM
+
+Untuk relasi antar tabel, kita akan mendefinisikan relasi antara pegawai dengan prodi. Satu prodi mempunyai banyak pegawai, sementara itu satu pegawai hanya menjadi satu prodi saja. Relasi akan kita buat pada model serta akan ditampilkan pada saat register user baru (dropdown nama prodi berasal dari model / tabel prodi.
+
+### Buat Model dan Migrasi
+
+Tabel didefinisikan melalui model, untuk keperluan ini kita akan membuat model Prodi yang dipetakan ke tabel **prodis**.
+
+```bash
+$ php artisan make:model Prodi --migration
+Model created successfully.
+Created Migration: 2019_02_26_025920_create_prodis_table
+$ 
+```
+
+Edit file hasil migrasi (**database/migrations/2019_02_26_025920_create_prodis_table.php**) pada method **up**:
+
+```php
+	public function up() {
+		
+		Schema::create('prodis', function (Blueprint $table) {
+			
+			$table->increments('id');
+			$table->string('kode_prodi', 10)->unique();
+			$table->string('nama_prodi', 50);
+			$table->timestamps();
+
+		});
+	}
+```
+
+Migrasikan:
+
+```bash
+$ php artisan migrate
+Migrating: 2019_02_26_025920_create_prodis_table
+Migrated:  2019_02_26_025920_create_prodis_table
+$
+```
+
+Setelah pembuatan berbagai model tersebut, model yang ada harus kita atur ulang. Pengaturan ini diperlukan karena adanya relasi antar tabel. Tabel prodi harus dibuat terlebih dahulu sehingga **database/migrations/** harus diatur lagi dengan penamaan berikut ini:
+
+```bash
+$ ls -la database/migrations/
+total 20
+drwxr-xr-x 2 bpdp bpdp 4096 Feb 26 11:23 ./
+drwxr-xr-x 5 bpdp bpdp 4096 Feb 26 06:30 ../
+-rw-r--r-- 1 bpdp bpdp  628 Feb 26 10:59 2019_02_25_000000_create_prodis_table.php
+-rw-r--r-- 1 bpdp bpdp 1166 Feb 26 11:00 2019_02_25_000001_create_users_table.php
+-rw-r--r-- 1 bpdp bpdp  683 Feb 26 06:30 2019_02_25_000002_create_password_resets_table.php
+$
+```
+
+Tabel users - method **up** harus diubah menjadi:
+
+```php
+    public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nidn', 50)->unique();
+            $table->string('kode_prodi', 10);
+            $table->string('name');
+            $table->string('jk', 6);
+            $table->string('jabatan', 50);
+            $table->string('no_telp', 15);
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->string('role');
+            $table->rememberToken();
+	    $table->timestamps();
+
+		$table->foreign('kode_prodi')
+			->references('kode_prodi')
+			->on('prodis')
+			->onDelete('cascade');
+
+        });
+    }
+```
+
+Setelah itu migrasikan mulai dari awal:
+
+```bash
+$ php artisan migrate:fresh
+Dropped all tables successfully.
+Migration table created successfully.
+Migrating: 2019_02_25_000000_create_prodis_table
+Migrated:  2019_02_25_000000_create_prodis_table
+Migrating: 2019_02_25_000001_create_users_table
+Migrated:  2019_02_25_000001_create_users_table
+Migrating: 2019_02_25_000002_create_password_resets_table
+Migrated:  2019_02_25_000002_create_password_resets_table
+$
+```
+
+Isikan 2 data prodi berikut ini melalui PHPMyAdmin atau MariaDB client:
+
+```sql
+INSERT INTO `prodis` (`id`, `kode_prodi`, `nama_prodi`, `created_at`, `updated_at`) VALUES
+(3, 'teknik-001', 'Teknik Informatika', NULL, NULL),
+(4, 'teknik-002', 'Teknik Mesin', NULL, NULL);
+```
+
+Saat register, data prodi akan dimasukkan dari database. Untuk keperluan itu, ada beberapa perbaikan:
+
+* Me
+
+

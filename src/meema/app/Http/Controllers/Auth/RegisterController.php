@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Prodi;
 
 class RegisterController extends Controller
 {
@@ -35,10 +36,21 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest');
+    public function __construct() {
+
+	$this->middleware('guest');
+
+
     }
+
+    public function showRegistrationForm() {
+
+	    $prodis = Prodi::all();
+	    return view('auth.register', compact('prodis', $prodis));
+
+    }
+
+
 
     /**
      * Get a validator for an incoming registration request.
@@ -48,9 +60,20 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+	    
+		$prodis = Prodi::all();
+
+		$valProdi = 'in:';
+
+		foreach ($prodis as $prodi) {
+			$valProdi .= $prodi->kode_prodi . ',';
+		}
+
+		$valProdi = substr($valProdi, 0, -1);
+
         return Validator::make($data, [
             'nidn' => ['required', 'string', 'max:50'],
-            'kode_prodi' => ['required', 'in:prodi1,prodi2'],
+            'kode_prodi' => ['required', trim($valProdi)],
             'name' => ['required', 'string', 'max:255'],
             'jk' => ['required', 'in:wanita,pria'],
             'jabatan' => ['required', 'string', 'max:50'],
