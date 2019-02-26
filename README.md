@@ -1250,7 +1250,7 @@ Fungsi *prodi* di atas digunakan untuk mengambil nama prodi dari koleksi data Us
 
 __Prodi.php__
 
-```
+```php
 <?php
 
 namespace App;
