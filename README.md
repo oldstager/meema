@@ -1187,4 +1187,164 @@ Perhatikan bagian awal untuk menampilkan semua error yang mungkin terjadi serta 
 
 Setelah ini, coba aktifkan aplikasi dan akses */register*.
 
+### Memperbaiki Model
+
+Model yang ter-relasi adalah Prodi dan User. Prodi mempunyai banyak User, sementara itu User hanya berada di bawah satu Prodi. Dengan demikian, hubungan antara Prodi dengan User adalah hubungan **one-to-many**. Berikut adalah file-file yang diubah di direktori **app**.
+
+__User.php__
+
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
+{
+
+	protected $primaryKey = 'nidn';
+	protected $keyType = 'string';
+
+
+    use Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'nidn', 'kode_prodi', 'name', 'jk', 'jabatan', 'no_telp', 'email', 'password', 'role',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    public function prodi()
+    {
+        return $this->belongsTo('App\Prodi', 'kode_prodi');
+    }
+
+}
+```
+
+Fungsi *prodi* di atas digunakan untuk mengambil nama prodi dari koleksi data User.
+
+__Prodi.php__
+
+```
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Prodi extends Model {
+
+	protected $primaryKey = 'kode_prodi';
+	protected $keyType = 'string';
+
+	public function users() {
+		
+		return $this->hasMany('App\User', 'kode_prodi');
+	
+	}	
+
+
+}
+```
+
+Pada dua file di atas, *kode_prodi* menjadi parameter dari relasi karena kedua model tersebut menggunakan *kode_prodi* sebagai *foreign key*. Untuk memeriksa hasil dari relasi, gunakan **php artisan tinker** berikut ini.
+
+```bash
+$ php artisan tinker
+Psy Shell v0.9.9 (PHP 7.3.2 — cli) by Justin Hileman
+>>> use App\Prodi
+>>> use App\User
+>>> $s = Prodi::find('teknik-002');
+=> App\Prodi {#2914
+     id: 4,
+     kode_prodi: "teknik-002",
+     nama_prodi: "Teknik Mesin",
+     created_at: null,
+     updated_at: null,
+   }
+>>> $s = Prodi::find('teknik-002')->users;
+=> Illuminate\Database\Eloquent\Collection {#2906
+     all: [
+       App\User {#2919
+         id: 1,
+         nidn: "123",
+         kode_prodi: "teknik-002",
+         name: "Dosen Mesin 1",
+         jk: "pria",
+         jabatan: "Dosen",
+         no_telp: "123",
+         email: "dosenmesin1@yahoo.com",
+         email_verified_at: null,
+         role: "admin",
+         created_at: "2019-02-26 06:03:37",
+         updated_at: "2019-02-26 06:03:37",
+       },
+       App\User {#2917
+         id: 2,
+         nidn: "456",
+         kode_prodi: "teknik-002",
+         name: "Dosen Mesin 2",
+         jk: "wanita",
+         jabatan: "Dosen",
+         no_telp: "456",
+         email: "dosenmesin2@yahoo.com",
+         email_verified_at: null,
+         role: "staf",
+         created_at: "2019-02-26 06:04:30",
+         updated_at: "2019-02-26 06:04:30",
+       },
+     ],
+   }
+>>> $s = User::find('123');
+=> App\User {#2921
+     id: 1,
+     nidn: "123",
+     kode_prodi: "teknik-002",
+     name: "Dosen Mesin 1",
+     jk: "pria",
+     jabatan: "Dosen",
+     no_telp: "123",
+     email: "dosenmesin1@yahoo.com",
+     email_verified_at: null,
+     role: "admin",
+     created_at: "2019-02-26 06:03:37",
+     updated_at: "2019-02-26 06:03:37",
+   }
+>>> $s = User::find('123')->prodi;
+=> App\Prodi {#2909
+     id: 4,
+     kode_prodi: "teknik-002",
+     nama_prodi: "Teknik Mesin",
+     created_at: null,
+     updated_at: null,
+   }
+>>> echo $s->nama_prodi;
+Teknik Mesin⏎
+>>> 
+```
 
