@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -31,13 +32,20 @@ class LoginController extends Controller
     // diganti dengan:
 	protected function redirectTo( ) {
 		if (Auth::check() && Auth::user()->role == 'admin') {
-			return redirect('/admin');
+			//return redirect('/admin');
+ 			$this->redirectTo = '/admin';
+        		return $this->redirectTo;
 		}
 		elseif (Auth::check() && Auth::user()->role == 'staf') {
-			return redirect('/staf');
+			//return redirect('/staf');
+ 			$this->redirectTo = '/staf';
+        		return $this->redirectTo;
+
 		}
 		else {
-			return redirect('/login');
+			//return redirect('/login');
+ 			$this->redirectTo = '/login';
+        		return $this->redirectTo;
 		}
 	}
 

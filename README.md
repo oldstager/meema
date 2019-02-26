@@ -495,5 +495,18 @@ Setelah itu, kita harus mengatur halaman yang akan ditampilkan masing-masing rol
 
 ```
 
+Untuk memproses *redirect* tersebut, ada 2 hal yang perlu kita siapkan:
 
- 
+* Membuat view (dan layout) untuk masing-masing role
+* Membuat controller untuk masing-masing route (/admin dan /staf)
+
+```bash
+$ php artisan make:controller AdminController
+Controller created successfully.
+$ php artisan make:controller StafController
+Controller created successfully.
+$
+```
+
+Konfigurasi routing
+
