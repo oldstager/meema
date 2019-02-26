@@ -429,6 +429,7 @@ __Staf.php__
 namespace App\Http\Middleware;
 
 use Closure;
+use Auth
 
 class Staf
 {
@@ -469,8 +470,7 @@ Middleware yang sudah dibuat harus didaftarkan terlebih dahulu di **app/Http/Ker
 	'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 	// Tambahan:
 	'admin' => 'App\Http\Middleware\Admin',
-	'agent' => 'App\Http\Middleware\Agent',
-	'customer' => 'App\Http\Middleware\Customer',
+	'staf' => 'App\Http\Middleware\Staf',
 	// sampai disini tambahan
     ];
 ```
@@ -483,22 +483,273 @@ Setelah itu, kita harus mengatur halaman yang akan ditampilkan masing-masing rol
     // diganti dengan:
 	protected function redirectTo( ) {
 		if (Auth::check() && Auth::user()->role == 'admin') {
-			return redirect('/admin');
+			//return redirect('/admin');
+ 			$this->redirectTo = '/admin';
+        		return $this->redirectTo;
 		}
 		elseif (Auth::check() && Auth::user()->role == 'staf') {
-			return redirect('/staf');
+			//return redirect('/staf');
+ 			$this->redirectTo = '/staf';
+        		return $this->redirectTo;
+
 		}
 		else {
-			return redirect('/login');
+			//return redirect('/login');
+ 			$this->redirectTo = '/login';
+        		return $this->redirectTo;
 		}
 	}
-
 ```
 
-Untuk memproses *redirect* tersebut, ada 2 hal yang perlu kita siapkan:
+Untuk memproses *redirect* tersebut, ada beberapa hal yang perlu kita siapkan:
 
 * Membuat view (dan layout) untuk masing-masing role
 * Membuat controller untuk masing-masing route (/admin dan /staf)
+* Mengaktifkan routing untuk controller.
+
+Untuk menyiapkan tampilan, layout harus kita buat terlebih dahulu. Layout ini nantinya akan digunakan oleh view. Masuk ke direktori **resources/views/layouts**, kemudian buat 2 file berikut untuk halaman admin dan halaman staf:
+
+__admin.blade.php__
+
+```html
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Administrator Dashboard') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Home') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} - {{Auth::user()->role }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="py-4">
+	    @yield('content')
+	</main>
+
+	<div class="links">
+		<a href="/prodi">Program Studi</a>
+	</div>
+
+    </div>
+</body>
+</html>
+```
+
+__staf.blade.php__
+
+```html
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Staff Dashboard') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Home') }}
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} - {{Auth::user()->role }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="py-4">
+	    @yield('content')
+	</main>
+
+	<div class="links">
+		<a href="/search">Search Rapat</a>
+	</div>
+
+    </div>
+</body>
+</html>
+```
+
+**Views** lebih sederhana karena hanya mendefinisikan isi. Buat 2 file untuk *greetings* saat admin dan staf berhasil login. Views tersebut berada pada **resources/views/**.
+
+__adminHome.blade.php__
+
+```html
+@extends('layouts.admin')
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Dashboard</div>
+
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+		    Selamat datang administrator!
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+```
+
+__stafHome.blade.php__
+
+```html
+@extends('layouts.staf')
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Dashboard</div>
+
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+		    Selamat datang staf!
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+```
+
+Setelah layout dan view kita buat, kita harus mendefinisikan controller yang nantinya akan digunakan untuk redirect setelah berhasil login: **AdminController** untuk halaman admin (/admin), serta **StafController** untuk halaman staf (/staf). Hasil dari perintah dibawah ini akan berada di **app/Http/Controllers/**.
 
 ```bash
 $ php artisan make:controller AdminController
@@ -508,5 +759,78 @@ Controller created successfully.
 $
 ```
 
-Konfigurasi routing
+__AdminController.php__
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class AdminController extends Controller {
+
+	public function __construct() {
+		$this->middleware('auth');    
+		$this->middleware('admin');
+	}
+
+	public function index() {
+		return view('adminHome');
+	}
+
+}
+```
+
+__StafController.php__
+
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class StafController extends Controller {
+
+	public function __construct() {
+		$this->middleware('auth');    
+		$this->middleware('staf');
+	}
+
+	public function index() {
+		return view('stafHome');
+	}
+
+}
+```
+
+Setelah controller didefinisikan, routing harus didefinisikan. Edit file **routes/web.php**:
+
+```php
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/admin', 'AdminController@index');
+Route::get('/staf', 'StafController@index');
+```
+
+Setelah itu, aktifkan aplikasi dan coba login dengan menggunakan 2 role tersebut. Masing-masing akan masuk ke halaman sesuai role dan jika belum login atau login tidak sesuai dengan role, maka akan masuk ke halaman login (/login) atau home sesuai role (/home).
 
