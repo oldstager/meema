@@ -39,3 +39,11 @@ Route::get('/admin/ruangan/edit/{kode_ruangan}', 'AdmCrudRuanganController@edit'
 Route::put('/admin/ruangan/update/{kode_ruangan}', 'AdmCrudRuanganController@update');
 Route::get('/admin/ruangan/hapus/{kode_ruangan}', 'AdmCrudRuanganController@hapus');
 Route::get('/admin/ruangan/showPaginate', 'AdmCrudRuanganController@showPaginate');
+// Rapat
+Route::get('/admin/rapat', 'AdmCrudRapatController@index');
+Route::get('/admin/rapat/tambah', 'AdmCrudRapatController@tambah');
+Route::post('/admin/rapat/simpan', 'AdmCrudRapatController@simpan');
+Route::get('/admin/rapat/edit/{kode_rapat}', 'AdmCrudRapatController@edit');
+Route::put('/admin/rapat/update/{kode_rapat}', 'AdmCrudRapatController@update');
+Route::get('/admin/rapat/hapus/{kode_rapat}', 'AdmCrudRapatController@hapus');
+Route::get('/admin/rapat/showPaginate', 'AdmCrudRapatController@showPaginate');

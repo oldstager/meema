@@ -79,7 +79,8 @@
 	</main>
 
 	<div class="links">
-	[  <a href="/admin/prodi">Program Studi</a> ] [ <a href="/admin/ruangan">Ruangan</a> ] 
+	[  <a href="/admin/prodi">Program Studi</a> ] [ <a href="/admin/ruangan">Ruangan</a> ] [ <a href="/admin/rapat">Jenis Rapat</a> ] 
+
 	</div>
 
     </div>
