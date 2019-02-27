@@ -79,7 +79,7 @@
 	</main>
 
 	<div class="links">
-	[  <a href="/admin/prodi">Program Studi</a> ]
+	[  <a href="/admin/prodi">Program Studi</a> ] [ <a href="/admin/ruangan">Ruangan</a> ] 
 	</div>
 
     </div>

@@ -16,26 +16,26 @@
 
 
                 <div class="card-body">
-                    <a href="/admin/prodi/tambah" class="btn btn-primary">Tambah Program Studi Baru</a>
-                    <a href="/admin/prodi/showPaginate" class="btn btn-primary">Tampilkan Daftar Program Studi - Paginasi</a>
+                    <a href="/admin/ruangan/tambah" class="btn btn-primary">Tambah Ruangan Baru</a>
+                    <a href="/admin/ruangan/showPaginate" class="btn btn-primary">Tampilkan Daftar Ruangan - Paginasi</a>
                     <br/>
                     <br/>
                     <table class="table table-bordered table-hover table-striped">
                         <thead>
                             <tr>
-                                <th>Kode Prodi</th>
-                                <th>Nama Prodi</th>
+                                <th>Kode Ruangan</th>
+                                <th>Nama Ruangan</th>
                                 <th>Proses</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($prodis as $prodi)
+                            @foreach($ruangans as $ruangan)
                             <tr>
-                                <td>{{ $prodi->kode_prodi }}</td>
-                                <td>{{ $prodi->nama_prodi }}</td>
+                                <td>{{ $ruangan->kode_ruangan}}</td>
+                                <td>{{ $ruangan->nama_ruangan}}</td>
                                 <td>
-                                    <a href="/admin/prodi/edit/{{ $prodi->kode_prodi }}" class="btn btn-warning">Edit</a>
-                                    <a href="/admin/prodi/hapus/{{ $prodi->kode_prodi }}" class="btn btn-danger">Hapus</a>
+                                    <a href="/admin/ruangan/edit/{{ $ruangan->kode_ruangan}}" class="btn btn-warning">Edit</a>
+                                    <a href="/admin/ruangan/hapus/{{ $ruangan->kode_ruangan}}" class="btn btn-danger">Hapus</a>
                                 </td>
                             </tr>
                             @endforeach
