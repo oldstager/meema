@@ -30,3 +30,4 @@ Route::post('/admin/prodi/simpan', 'AdmCrudProdiController@simpan');
 Route::get('/admin/prodi/edit/{kode_prodi}', 'AdmCrudProdiController@edit');
 Route::put('/admin/prodi/update/{kode_prodi}', 'AdmCrudProdiController@update');
 Route::get('/admin/prodi/hapus/{kode_prodi}', 'AdmCrudProdiController@hapus');
+Route::get('/admin/prodi/showPaginate', 'AdmCrudProdiController@showPaginate');

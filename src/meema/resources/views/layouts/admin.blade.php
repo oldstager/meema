@@ -70,14 +70,16 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+	</nav>
 
-        <main class="py-4">
+	<main class="py-4">
+
 	    @yield('content')
+
 	</main>
 
 	<div class="links">
-		<a href="/prodi">Program Studi</a>
+	[  <a href="/admin/prodi">Program Studi</a> ]
 	</div>
 
     </div>

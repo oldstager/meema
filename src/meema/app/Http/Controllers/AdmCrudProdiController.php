@@ -76,5 +76,11 @@ class AdmCrudProdiController extends Controller {
 	
 	}
 
+	public function showPaginate() {
+
+		$prodis = Prodi::paginate(2);
+		return view('admCrudProdiShowPaginate', ['prodis' => $prodis]);
+
+	}
 	
 }
