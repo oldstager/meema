@@ -29,7 +29,7 @@
  
                         <div class="form-group">
                             <label>Kode Prodi</label>
-                            <input type="text" name="kode_prodi" class="form-control" placeholder="Kode Program Studi" value=" {{ $prodi->kode_prodi }}">
+                            <input type="text" name="kode_prodi" class="form-control" placeholder="Kode Program Studi" value="{{ $prodi->kode_prodi }}">
  
                             @if($errors->has('kode_prodi'))
                                 <div class="text-danger">

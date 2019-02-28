@@ -79,14 +79,26 @@ class AdmCrudUserController extends Controller {
 	}
 
 	public function edit($nidn) {
-	     
-		$user = User::find($nidn);
-		return view('admCrudUserEdit', ['user' => $user]);
+
+		$prodis = Prodi::all();
+
+		$user = User::with('prodi')->find($nidn);
+		return view('admCrudUserEdit')->with(compact('user', 'prodis'));
 
 	}
 
 
 	public function update($nidn, Request $request) {
+
+		$prodis = Prodi::all();
+
+		$valProdi = 'in:';
+
+		foreach ($prodis as $prodi) {
+			$valProdi .= $prodi->kode_prodi . ',';
+		}
+
+		$valProdi = substr($valProdi, 0, -1);
 
 		$this->validate($request,[
 	            'nidn' => ['required', 'string', 'max:50'],
@@ -104,7 +116,7 @@ class AdmCrudUserController extends Controller {
 	        $user->nidn = $request->nidn;
 	        $user->kode_prodi = $request->kode_prodi;
 	        $user->name = $request->name;
-	        $user->jk = $reqeust->jk;
+	        $user->jk = $request->jk;
 	        $user->jabatan = $request->jabatan;
 	        $user->no_telp = $request->no_telp;
 	        $user->email = $request->email;
