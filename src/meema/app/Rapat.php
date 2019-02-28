@@ -10,12 +10,10 @@ class Rapat extends Model {
 	protected $keyType = 'string';
 	protected $fillable = ['kode_rapat','nama_rapat'];
 
-	/*
-	public function users() {
+	public function notulensis() {
 		
-		return $this->hasMany('App\User', 'kode_prodi');
+		return $this->hasMany('App\Notulensi', 'kode_rapat');
 
 	}
-	 */
 
 }

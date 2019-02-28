@@ -16,5 +16,10 @@ class Prodi extends Model {
 	
 	}	
 
+	public function notulensis() {
+		
+		return $this->hasMany('App\Notulensi', 'kode_prodi');
+
+	}
 
 }

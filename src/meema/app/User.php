@@ -47,4 +47,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\Prodi', 'kode_prodi');
     }
 
+	public function notulensis() {
+		
+		return $this->hasMany('App\Notulensi', 'nidn');
+	
+	}	
+    
 }

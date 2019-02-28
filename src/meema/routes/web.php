@@ -55,3 +55,5 @@ Route::get('/admin/user/edit/{nidn}', 'AdmCrudUserController@edit');
 Route::put('/admin/user/update/{nidn}', 'AdmCrudUserController@update');
 Route::get('/admin/user/hapus/{nidn}', 'AdmCrudUserController@hapus');
 Route::get('/admin/user/showPaginate', 'AdmCrudUserController@showPaginate');
+// Notulensi
+Route::get('/admin/notulensi', 'AdmCrudNotulensiController@index');
