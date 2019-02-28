@@ -16,7 +16,7 @@ class Notulensi extends Model
 	* @var array
 	*/
 	protected $fillable = [
-		'id_notulensi', 'nama_rapat', 'nidn', 'kode_rapat', 'kode_prodi', 'kode_ruangan', 'tanggal_rapat', 'waktu_mulai', 'waktu_selesai', 'hasil_rapat', 'foto', 'file'
+		'id_notulensi', 'nama_rapat', 'nidn', 'kode_rapat', 'kode_prodi', 'kode_ruangan', 'tanggal_rapat', 'waktu_mulai', 'waktu_selesai', 'hasil_rapat', 'arsip'
 	];
 
 	/**

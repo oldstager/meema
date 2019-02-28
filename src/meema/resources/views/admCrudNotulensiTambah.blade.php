@@ -40,7 +40,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/admin/user/simpan">
+                    <form method="POST" action="/admin/notulensi/simpan"  enctype="multipart/form-data">
                         @csrf
 
 
@@ -193,35 +193,28 @@
     </div>
 </div>
 <div class="form-group row">
-    <label for="foto" class="col-md-4 col-form-label text-md-right">Foto</label>
+    <label for="arsip" class="col-md-4 col-form-label text-md-right">Arsip</label>
 
     <div class="col-md-6">
 
-        <textarea id="foto" class="form-control{{ $errors->has('foto') ? ' is-invalid' : '' }}" name="foto" value="{{ old('foto') }}" required autofocus></textarea>
+      <input type="file" name="arsip[]" class="myfrm form-control">
+      <input type="file" name="arsip[]" class="myfrm form-control">
+      <input type="file" name="arsip[]" class="myfrm form-control">
+      <input type="file" name="arsip[]" class="myfrm form-control">
+      <input type="file" name="arsip[]" class="myfrm form-control">
 
-        @if ($errors->has('foto'))
+        @if ($errors->has('arsip'))
             <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('foto') }}</strong>
+                <strong>{{ $errors->first('arsip') }}</strong>
             </span>
         @endif
 
     </div>
 </div>
-<div class="form-group row">
-    <label for="file" class="col-md-4 col-form-label text-md-right">File</label>
 
-    <div class="col-md-6">
 
-        <textarea id="file" class="form-control{{ $errors->has('file') ? ' is-invalid' : '' }}" name="file" value="{{ old('file') }}" required autofocus></textarea>
 
-        @if ($errors->has('file'))
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('file') }}</strong>
-            </span>
-        @endif
 
-    </div>
-</div>
 
 
 
@@ -229,7 +222,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('Tambah Notulensi') }}
                                 </button>
                             </div>
                         </div>

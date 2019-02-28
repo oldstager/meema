@@ -16,7 +16,6 @@ class AdmCrudNotulensiController extends Controller {
 
 		$notulensis = Notulensi::with('prodi')
 			->with('ruangan')
-			->with('prodi')
 			->with('user')
 			->with('rapat')
 			->get();
@@ -35,5 +34,83 @@ class AdmCrudNotulensiController extends Controller {
 
 	}
 
+	public function simpan(Request $request) {
+
+		$prodis = Prodi::all();
+		$valProdi = 'in:';
+		foreach ($prodis as $prodi) {
+			$valProdi .= $prodi->kode_prodi . ',';
+		}
+		$valProdi = substr($valProdi, 0, -1);
+
+		$rapats = Rapat::all();
+		$valRapat = 'in:';
+		foreach ($rapats as $rapat) {
+			$valRapat .= $rapat->kode_rapat . ',';
+		}
+		$valRapat = substr($valRapat, 0, -1);
+
+		$ruangans = Ruangan::all();
+		$valRuangan = 'in:';
+		foreach ($ruangans as $ruangan) {
+			$valRuangan .= $ruangan->kode_ruangan . ',';
+		}
+		$valRuangan = substr($valRuangan, 0, -1);
+
+		$users = User::all();
+		$valUser = 'in:';
+		foreach ($users as $user) {
+			$valUser .= $user->nidn . ',';
+		}
+		$valUser = substr($valUser, 0, -1);
+
+		$this->validate($request,[
+
+			'id_notulensi'=> ['required', 'string', 'max:10'],
+			'nama_rapat'=> ['required', 'string', 'max:100'],
+			'nidn' => ['required', trim($valUser)],
+			'kode_rapat' => ['required', trim($valRapat)],
+			'kode_prodi' => ['required', trim($valProdi)],
+			'kode_ruangan' => ['required', trim($valRuangan)],
+			'tanggal_rapat'=> 'required',
+			'waktu_mulai'=> 'required',
+			'waktu_selesai'=> 'required',
+			'hasil_rapat'=> 'required',
+			'arsip' => 'required',
+			'arsip.*' => 'mimes:doc,pdf,docx,zip,png,jpg,xls,ppt'
+
+		]);
+
+ 	        if($request->hasfile('arsip')) {
+
+			foreach($request->file('arsip') as $ar) {
+
+				$namaFile = $ar->getClientOriginalName();
+				$ar->move(public_path().'/files/', $namaFile);  
+				$dataFile[] = $namaFile;
+			}
+		
+		}
+
+
+		Notulensi::create([
+
+			'id_notulensi'=> $request->id_notulensi,
+			'nama_rapat'=> $request->nama_rapat,
+			'nidn' => $request->nidn,
+			'kode_rapat' => $request->kode_rapat,
+			'kode_prodi' => $request->kode_prodi,
+			'kode_ruangan' => $request->kode_ruangan,
+			'tanggal_rapat'=> $request->tanggal_rapat,
+			'waktu_mulai'=> $request->waktu_mulai,
+			'waktu_selesai'=> $request->waktu_selesai,
+			'hasil_rapat'=> $request->hasil_rapat,
+			'arsip' => json_encode($dataFile)
+
+	    	]);
+ 
+	    	return redirect('/admin/notulensi');
+
+	}
 
 }

@@ -58,3 +58,4 @@ Route::get('/admin/user/showPaginate', 'AdmCrudUserController@showPaginate');
 // Notulensi
 Route::get('/admin/notulensi', 'AdmCrudNotulensiController@index');
 Route::get('/admin/notulensi/tambah', 'AdmCrudNotulensiController@tambah');
+Route::post('/admin/notulensi/simpan', 'AdmCrudNotulensiController@simpan');

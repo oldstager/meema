@@ -10,9 +10,9 @@ class Ruangan extends Model {
 	protected $keyType = 'string';
 	protected $fillable = ['kode_ruangan','nama_ruangan'];
 
-	public function notulensis() {
+	public function notulensi() {
 		
-		return $this->hasMany('App\Notulensi', 'kode_ruangan');
+		return $this->hasOne('App\Notulensi', 'kode_ruangan');
 	
 	}
 
