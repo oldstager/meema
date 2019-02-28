@@ -57,3 +57,4 @@ Route::get('/admin/user/hapus/{nidn}', 'AdmCrudUserController@hapus');
 Route::get('/admin/user/showPaginate', 'AdmCrudUserController@showPaginate');
 // Notulensi
 Route::get('/admin/notulensi', 'AdmCrudNotulensiController@index');
+Route::get('/admin/notulensi/tambah', 'AdmCrudNotulensiController@tambah');
