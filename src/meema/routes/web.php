@@ -47,3 +47,11 @@ Route::get('/admin/rapat/edit/{kode_rapat}', 'AdmCrudRapatController@edit');
 Route::put('/admin/rapat/update/{kode_rapat}', 'AdmCrudRapatController@update');
 Route::get('/admin/rapat/hapus/{kode_rapat}', 'AdmCrudRapatController@hapus');
 Route::get('/admin/rapat/showPaginate', 'AdmCrudRapatController@showPaginate');
+// Users
+Route::get('/admin/user', 'AdmCrudUserController@index');
+Route::get('/admin/user/tambah', 'AdmCrudUserController@tambah');
+Route::post('/admin/user/simpan', 'AdmCrudUserController@simpan');
+Route::get('/admin/user/edit/{nidn}', 'AdmCrudUserController@edit');
+Route::put('/admin/user/update/{nidn}', 'AdmCrudUserController@update');
+Route::get('/admin/user/hapus/{nidn}', 'AdmCrudUserController@hapus');
+Route::get('/admin/user/showPaginate', 'AdmCrudUserController@showPaginate');
