@@ -16,32 +16,48 @@
 
 
                 <div class="card-body">
-                    <a href="/admin/prodi/tambah" class="btn btn-primary">Tambah Program Studi Baru</a>
+                    <a href="/admin/user/tambah" class="btn btn-primary">Tambah Dosen - Karyawan Baru</a>
+                    <a href="/admin/user/" class="btn btn-primary">Tampilkan Daftar Dosen/Karyawan</a>
                     <br/>
                     <br/>
                     <table class="table table-bordered table-hover table-striped">
                         <thead>
-                            <tr>
-                                <th>Kode Prodi</th>
-                                <th>Nama Prodi</th>
+			    <tr>
+                                <th>NIDN</th>
+                                <th>Nama</th>
+                                <th>Prodi</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Jabatan</th>
+                                <th>Telp</th>
+                                <th>E-mail</th>
+                                <th>Password</th>
+                                <th>Role</th>
                                 <th>Proses</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($prodis as $prodi)
+                            @foreach($users as $user)
                             <tr>
-                                <td>{{ $prodi->kode_prodi }}</td>
-                                <td>{{ $prodi->nama_prodi }}</td>
+                                <td>{{ $user->nidn}}</td>
+				<td>{{ $user->name}}</td>
+                                <td>{{ $user->prodi->nama_prodi}}</td>
+                                <td>{{ $user->jk}}</td>
+                                <td>{{ $user->jabatan}}</td>
+                                <td>{{ $user->no_telp}}</td>
+                                <td>{{ $user->email}}</td>
+                                <td>{{ $user->password}}</td>
+                                <td>{{ $user->role}}</td>
                                 <td>
-                                    <a href="/admin/prodi/edit/{{ $prodi->kode_prodi }}" class="btn btn-warning">Edit</a>
-                                    <a href="/admin/prodi/hapus/{{ $prodi->kode_prodi }}" class="btn btn-danger">Hapus</a>
+                                    <a href="/admin/user/edit/{{ $user->nidn }}" class="btn btn-warning">Edit</a>
+                                    <a href="/admin/user/hapus/{{ $user->nidn }}" class="btn btn-danger">Hapus</a>
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
 		    </table>
-		   {{ $prodis->links() }}
+		   {{ $users->links() }}
                 </div>
+
 
 
                 </div>
@@ -50,4 +66,3 @@
     </div>
 </div>
 @endsection
-

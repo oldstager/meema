@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Prodi;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
+
 class AdmCrudUserController extends Controller {
 
 	public function __construct() {
@@ -25,7 +30,8 @@ class AdmCrudUserController extends Controller {
 
 	public function tambah() {
 
-		return view('admCrudUsertTambah');
+		$prodis = Prodi::all();
+		return view('admCrudUserTambah', compact('prodis', $prodis));
 
 	}
 
@@ -59,7 +65,7 @@ class AdmCrudUserController extends Controller {
 	            'nidn' => $request->nidn,
 	            'kode_prodi' => $request->kode_prodi,
 	            'name' => $request->name,
-	            'jk' => $reqeust->jk,
+	            'jk' => $request->jk,
 	            'jabatan' => $request->jabatan,
 	            'no_telp' => $request->no_telp,
 	            'email' => $request->email,
@@ -122,7 +128,7 @@ class AdmCrudUserController extends Controller {
 
 	public function showPaginate() {
 
-		$users = User::paginate(2);
+		$users = User::with('prodi')->paginate(2);
 		return view('admCrudUserShowPaginate', ['users' => $users]);
 
 	}
