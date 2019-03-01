@@ -50,7 +50,15 @@
                                 <td>{{ $notulensi->waktu_mulai}}</td>
                                 <td>{{ $notulensi->waktu_selesai}}</td>
                                 <td>{{ $notulensi->hasil_rapat}}</td>
-                                <td>{{ $notulensi->arsip}}</td>
+				<td>
+				@php
+				$arArsip = explode('*', $notulensi->arsip);
+				foreach ($arArsip as $arsip) {
+					echo '<a href="/files/' . $arsip . '">' . $arsip . '</a><br />';
+				}
+				@endphp
+				</td>
+				</td>
                                 <td>
                                     <a href="/admin/notulensi/edit/{{ $notulensi->id_notulensi }}" class="btn btn-warning">Edit</a>
                                     <a href="/admin/notulensi/hapus/{{ $notulensi->id_notulensi }}" class="btn btn-danger">Hapus</a>

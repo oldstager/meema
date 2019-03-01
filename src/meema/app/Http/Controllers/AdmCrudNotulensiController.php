@@ -83,12 +83,16 @@ class AdmCrudNotulensiController extends Controller {
 
  	        if($request->hasfile('arsip')) {
 
+			$dataFile = "";
 			foreach($request->file('arsip') as $ar) {
 
 				$namaFile = $ar->getClientOriginalName();
 				$ar->move(public_path().'/files/', $namaFile);  
-				$dataFile[] = $namaFile;
+				$dataFile .= $namaFile . "*";
+
 			}
+
+			$dataFile = substr($dataFile, 0, -1);
 		
 		}
 
@@ -105,12 +109,36 @@ class AdmCrudNotulensiController extends Controller {
 			'waktu_mulai'=> $request->waktu_mulai,
 			'waktu_selesai'=> $request->waktu_selesai,
 			'hasil_rapat'=> $request->hasil_rapat,
-			'arsip' => json_encode($dataFile)
+			'arsip' => $dataFile
 
 	    	]);
  
 	    	return redirect('/admin/notulensi');
 
+	}
+
+	public function hapus($id_notulensi) {
+
+		$notulensi = Notulensi::find($id_notulensi);
+
+		if ($notulensi == null) {
+
+			return redirect('/admin/notulensi');
+
+		} else {
+			$arArsip = explode('*', $notulensi->arsip);
+
+			foreach($arArsip as $delFile) {
+
+				$namaFile = public_path() . '/files/' . $delFile;
+				unlink($namaFile);
+
+			}
+
+			$notulensi->delete();
+			return redirect('/admin/notulensi');
+
+		}
 	}
 
 }
