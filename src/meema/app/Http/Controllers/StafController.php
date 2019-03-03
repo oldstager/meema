@@ -77,9 +77,35 @@ class StafController extends Controller {
 
 		$notulensis = Notulensi::where('nidn', $request->nidn)->get();
 
-		return view('stafHasilCariNidn', ['notulensis' => $notulensis]);
-
+		return view('stafHasilCari', ['notulensis' => $notulensis]);
 
 	}
+
+
+	public function cariTanggalRapat(Request $request) {
+
+	    	$this->validate($request,[
+    			'tanggal_rapat_awal' => ['required', 'date'],
+    			'tanggal_rapat_akhir' => ['required', 'date'],
+	    	]);
+
+		$notulensis = Notulensi::whereBetween('tanggal_rapat', [$request->tanggal_rapat_awal, $request->tanggal_rapat_akhir])->get();
+
+		return view('stafHasilCari', ['notulensis' => $notulensis]);
+
+	}
+
+	public function cariKodeRapat(Request $request) {
+
+	    	$this->validate($request,[
+    			'kode_rapat' => ['required', 'string', 'max:10'],
+	    	]);
+
+		$notulensis = Notulensi::where('kode_rapat', $request->kode_rapat)->get();
+
+		return view('stafHasilCari', ['notulensis' => $notulensis]);
+
+	}
+
 
 }

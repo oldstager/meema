@@ -100,11 +100,24 @@
 
 				<div class="col-md-6">
 
-				        <input id="tanggal_rapat" type="date" class="form-control{{ $errors->has('tanggal_rapat') ? ' is-invalid' : '' }}" name="tanggal_rapat" value="{{ old('tanggal_rapat') }}" required autofocus>
+					<br />
+					Dari Tanggal:
 
-				        @if ($errors->has('tanggal_rapat'))
+					<input id="tanggal_rapat_awal" type="date" class="form-control{{ $errors->has('tanggal_rapat_awal') ? ' is-invalid' : '' }}" name="tanggal_rapat_awal" value="{{ old('tanggal_rapat_awal') }}" required autofocus>
+
+					<br />
+					Sampai Tanggal:
+
+					<input id="tanggal_rapat_akhir" type="date" class="form-control{{ $errors->has('tanggal_rapat_akhir') ? ' is-invalid' : '' }}" name="tanggal_rapat_akhir" value="{{ old('tanggal_rapat_akhir') }}" required autofocus>
+
+				        @if ($errors->has('tanggal_rapat_awal'))
 				        <span class="invalid-feedback" role="alert">
-			         	       <strong>{{ $errors->first('tanggal_rapat') }}</strong>
+			         	       <strong>{{ $errors->first('tanggal_rapat_awal') }}</strong>
+				         </span>
+				        @endif
+				        @if ($errors->has('tanggal_rapat_akhir'))
+				        <span class="invalid-feedback" role="alert">
+			         	       <strong>{{ $errors->first('tanggal_rapat_akhir') }}</strong>
 				         </span>
 				        @endif
 
