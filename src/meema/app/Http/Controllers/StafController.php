@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Notulensi;
+use App\User;
+use App\Rapat;
 
 class StafController extends Controller {
 
@@ -53,6 +55,30 @@ class StafController extends Controller {
 			->with('rapat')
 			->find($id_notulensi);;
 		return view('stafCetakNotulensi', ['notulensi' => $notulensi]);
+
+	}
+
+	public function cari() {
+
+		$users = User::all();
+		$rapats = Rapat::all();
+		
+		return view('stafCariNotulensi')->with(compact('users', 'rapats'));
+
+	}
+
+
+
+	public function cariNidn(Request $request) {
+
+	    	$this->validate($request,[
+    			'nidn' => ['required', 'string', 'max:50'],
+	    	]);
+
+		$notulensis = Notulensi::where('nidn', $request->nidn)->get();
+
+		return view('stafHasilCariNidn', ['notulensis' => $notulensis]);
+
 
 	}
 
