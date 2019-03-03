@@ -61,9 +61,10 @@ Route::get('/admin/notulensi/tambah', 'AdmCrudNotulensiController@tambah');
 Route::post('/admin/notulensi/simpan', 'AdmCrudNotulensiController@simpan');
 Route::get('/admin/notulensi/hapus/{id_notulensi}', 'AdmCrudNotulensiController@hapus');
 // Staf - Searching
-Route::get('/staf/notulensi/cari', 'StafController@index');
+Route::get('/staf/notulensi/cari', 'StafController@cari');
 Route::post('/staf/notulensi/cari/nidn', 'StafController@cariNidn');
 Route::post('/staf/notulensi/cari/tanggal_rapat', 'StafController@cariTanggalRapat');
 Route::post('/staf/notulensi/cari/kode_rapat', 'StafController@cariKodeRapat');
 Route::get('/staf/notulensi/showPaginate', 'StafController@showPaginate');
 Route::get('/staf/notulensi/printDaftar', 'StafController@printDaftar');
+Route::get('/staf/notulensi/cetak/{id_notulensi}', 'StafController@cetak');

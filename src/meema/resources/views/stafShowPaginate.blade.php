@@ -61,7 +61,7 @@
 				</td>
 				</td>
 				<td>
-                                    <a href="/staf/notulensi/cetak/{{ $notulensi->id_notulensi }}" class="btn btn-warning">Cetak Notulensi</a>
+                                    <a href="/staf/notulensi/cetak/{{ $notulensi->id_notulensi }}" target="_blank" class="btn btn-warning">Cetak Notulensi</a>
                                 </td>
                             </tr>
                             @endforeach

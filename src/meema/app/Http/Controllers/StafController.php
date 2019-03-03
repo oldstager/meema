@@ -45,4 +45,15 @@ class StafController extends Controller {
 
 	}
 
+	public function cetak($id_notulensi) {
+
+		$notulensi = Notulensi::with('prodi')
+			->with('ruangan')
+			->with('user')
+			->with('rapat')
+			->find($id_notulensi);;
+		return view('stafCetakNotulensi', ['notulensi' => $notulensi]);
+
+	}
+
 }
