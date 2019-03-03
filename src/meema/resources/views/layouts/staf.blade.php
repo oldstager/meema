@@ -77,7 +77,7 @@
 	</main>
 
 	<div class="links">
-		<a href="/search">Search Rapat</a>
+		[ <a href="/staf/notulensi/cari">Cari Notulensi</a> ] [ <a href="/staf/notulensi/printDaftar" target="_blank">Cetak Daftar Notulensi</a> ]
 	</div>
 
     </div>

@@ -1,24 +1,12 @@
-@extends('layouts.staf')
+@extends('layouts.laporan')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Dashboard</div>
-
+                <div class="card-header"><b>Laporan Daftar Notulensi</b></div>
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-
-
-                <div class="card-body">
-		    <a href="/staf/notulensi/showPaginate" class="btn btn-primary">Tampilkan Daftar Notulensi- Paginasi</a><br />
-		    <a href="/staf/notulensi/cari" class="btn btn-primary">Cari Notulensi</a>
                     <br/>
                     <br/>
                     <table class="table table-bordered table-hover table-striped">
@@ -35,7 +23,6 @@
                                 <th>Berakhir</th>
                                 <th>Hasil Rapat</th>
                                 <th>Arsip</th>
-                                <th>Proses</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,16 +47,11 @@
 				@endphp
 				</td>
 				</td>
-				<td>
-                                    <a href="/staf/notulensi/cetak/{{ $notulensi->id_notulensi }}" class="btn btn-warning">Cetak Notulensi</a>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-
-
 
 
 

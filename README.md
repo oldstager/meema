@@ -9,4 +9,5 @@ Software ini digunakan untuk mengelola notulensi rapat.
 5. [Fasilitas CRUD](05.md): Membuat fasilitas *Create-Read-Update-Delete*.
 6. [Referensi Tabel Master 1-M di Blade](06.md): Saat mengakses tabel transaksi yang mempunyai referensi di tabel master, kita perlu mengakses field lain di tabel master supaya lebih jelas. 
 7. [Upload File](07.md): Notulen rapat berisi antara lain foto dan dokumen-dokumen. Bagian ini membahas tentang CRUD untuk Notulen, termasuk untuk upload file.
-
+8. [Fasilitas Searching](08.md): User mempunyai fasilitas untuk mencari data sesuai kriteria tertentu.
+9. [Menampilkan Laporan](09.md): Laporan berupa notulensi rapat ditampilkan dengan fasilitas untuk mencetak.

@@ -17,7 +17,7 @@
 
 
                 <div class="card-body">
-		    <a href="/staf/notulensi/showPaginate" class="btn btn-primary">Tampilkan Daftar Notulensi- Paginasi</a><br />
+		    <a href="/staf" class="btn btn-primary">Tampilkan Daftar Notulensi</a><br />
 		    <a href="/staf/notulensi/cari" class="btn btn-primary">Cari Notulensi</a>
                     <br/>
                     <br/>
@@ -66,9 +66,9 @@
                             </tr>
                             @endforeach
                         </tbody>
-                    </table>
+		    </table>
+		   {{ $notulensis->links() }}
                 </div>
-
 
 
 
